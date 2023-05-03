@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <LangVersion>10.0</LangVersion>
+    <ProjectGuid>ACA95EA0-7773-4ADA-8840-69ADA72C91B4</ProjectGuid>
+    <WarningsAsErrors>CS8600;CS8601;CS8602;CS8603;CS8604;CS8618;CS8625;CS8620;CS8619;CS8714;CS8613</WarningsAsErrors>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Adform.Ciam.Kafka" Version="0.0.5" />
+    <PackageReference Include="Adform.Ciam.RabbitMQ" Version="0.0.5" />
+    <PackageReference Include="Adform.Ciam.SharedKernel" Version="0.0.5" />
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="10.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Adform.Bloom.DataAccess\Adform.Bloom.DataAccess.csproj" />
+    <ProjectReference Include="..\Adform.Bloom.Messages\Adform.Bloom.Messages.csproj" />
+  </ItemGroup>
+
+</Project>

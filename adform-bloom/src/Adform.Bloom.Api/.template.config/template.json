@@ -1,0 +1,15 @@
+{
+  "$schema": "http://json.schemastore.org/template",
+  "author": "Team Odyssey",
+  "classifications": [ "Web/WebAPI" ],
+  "name": "CIAM Bloom",
+  "identity": "Adform.Bloom.CSharp",
+  "groupIdentity": "Adform.Bloom",
+  "shortName": "bloom.api",
+  "tags": {
+    "language": "C#",
+    "type": "project"
+  },
+  "sourceName": "Adform.Bloom",
+  "preferNameDirectory": true
+}

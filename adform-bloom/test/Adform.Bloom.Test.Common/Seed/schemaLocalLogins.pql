@@ -1,0 +1,7 @@
+﻿CREATE TABLE IF NOT EXISTS local_logins
+            (
+                id UUID PRIMARY KEY,
+                two_factor_required BOOL,
+                notifications_disabled BOOL,
+                status int2
+            )

@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <LangVersion>10.0</LangVersion>
+    <ProjectGuid>5B917E6F-3D1B-4738-8A36-18327178D491</ProjectGuid>
+    <WarningsAsErrors>CS8600;CS8601;CS8602;CS8603;CS8604;CS8618;CS8625;CS8620;CS8619;CS8714;CS8613</WarningsAsErrors>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Adform.Ciam.TokenProvider" Version="0.0.5" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="6.0.0" />
+    <PackageReference Include="protobuf-net.Grpc.ClientFactory" Version="1.0.152" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Adform.Bloom.Contracts\Adform.Bloom.Contracts.csproj" />
+    <ProjectReference Include="..\Adform.Bloom.Domain\Adform.Bloom.Domain.csproj" />
+    <ProjectReference Include="..\Adform.Bloom.Infrastructure\Adform.Bloom.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>

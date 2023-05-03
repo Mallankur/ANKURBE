@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <LangVersion>10.0</LangVersion>
+    <SonarQubeExclude>true</SonarQubeExclude>
+    <ProjectGuid>345AB6AB-11C3-428F-8F68-77CCC41F07EB</ProjectGuid>
+    <WarningsAsErrors>CS8600;CS8601;CS8602;CS8603;CS8604;CS8618;CS8625;CS8620;CS8619;CS8714;CS8613</WarningsAsErrors>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Adform.Bloom.Read.Contracts" Version="1.0.0" />
+  </ItemGroup>
+</Project>

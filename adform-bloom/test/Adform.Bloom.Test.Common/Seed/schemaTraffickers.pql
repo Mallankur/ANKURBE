@@ -1,0 +1,7 @@
+CREATE TABLE IF NOT EXISTS traffickers
+    (
+        id UUID PRIMARY KEY,
+        username VARCHAR,
+        email VARCHAR,
+        name VARCHAR
+    )

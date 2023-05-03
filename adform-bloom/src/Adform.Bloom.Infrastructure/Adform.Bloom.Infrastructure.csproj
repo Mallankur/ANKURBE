@@ -1,0 +1,35 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <LangVersion>10.0</LangVersion>
+    <ProjectGuid>58A980B1-D4BD-4256-8BBF-F93071EF1B44</ProjectGuid>
+    <WarningsAsErrors>CS8600;CS8601;CS8602;CS8603;CS8604;CS8618;CS8625;CS8620;CS8619;CS8714;CS8613</WarningsAsErrors>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Adform.Bloom.Middleware" Version="0.3.4" />
+    <PackageReference Include="Adform.Ciam.ExceptionHandling.Abstractions" Version="0.0.5" />
+    <PackageReference Include="Adform.Ciam.Monitoring.Abstractions" Version="0.0.5" />
+    <PackageReference Include="Adform.Ciam.OngDb" Version="0.0.5" />
+    <PackageReference Include="Adform.Ciam.Cache" Version="0.0.5" />
+    <PackageReference Include="Adform.Ciam.Aerospike" Version="0.0.5" />
+    <PackageReference Include="CorrelationId" Version="3.0.1" />
+    <PackageReference Include="MediatR" Version="10.0.1" />   
+    <PackageReference Include="Mapster.DependencyInjection" Version="1.0.0" />
+    <PackageReference Include="IdentityServer4" Version="4.1.2" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="6.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Adform.Bloom.Domain\Adform.Bloom.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <SonarQubeSetting Include="sonar.coverage.exclusions">
+      <Value>**/BloomInMemoryCacheManager.cs</Value>
+    </SonarQubeSetting>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,9 @@
+﻿INSERT INTO public.traffickers (id,
+username,
+email,
+name
+)
+VALUES 
+('82c142d0-0533-4302-b09a-a0fb5373942c','trafficker0','trafficker0@test','Trafficker0'),
+('b2500bf1-45e9-4b8f-9be4-a8c8dd52a9f0','trafficker1','trafficker1@test','Trafficker1'),
+('74936140-fbdb-468c-8cff-891bdde5dd17','trafficker2','trafficker2@test','Trafficker2');

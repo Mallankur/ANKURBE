@@ -1,0 +1,9 @@
+﻿INSERT INTO public.data_providers (id,legacy_id,name,status)
+VALUES
+
+('b214781b-5235-42c1-a89f-93a30c364eef','5','Tenant5','1'),
+('0748600c-e328-48df-8ec9-be52af4f0889','6','Tenant6','1'),
+('8ffc490c-a173-4499-92b3-686e2fe32bf8','13','Tenant13','1'),
+('c8231bb6-a453-4683-835b-4c972e62b5f9','14','Tenant14','1'),
+('7ff1c7cc-ab29-4e24-aa8b-28c415e025e0','15','Tenant15','1'),
+('a9f07c1d-f137-4aa3-a5f6-e223a81da4b2','16','Tenant16','1');

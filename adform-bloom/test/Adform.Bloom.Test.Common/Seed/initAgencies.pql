@@ -1,0 +1,7 @@
+﻿INSERT INTO public.agencies (id,legacy_id,name,status)
+VALUES
+('ea0d54a3-1d54-4410-a2a0-55548baa4587','1','Tenant1','1'),
+('49195836-874c-4db2-b954-a4ee70717eab','2','Tenant2','1'),
+('858e4425-72ca-4113-8fe9-27fa5b034878','7','Tenant7','1'),
+('d2b69ddb-fe00-4c5d-916f-b71877dac4c8','8','Tenant8','1'),
+('ce006fd5-3339-40de-b553-d12c2a136b3c','9','Tenant9','1');
