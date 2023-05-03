@@ -1,0 +1,175 @@
+version: '3.4'
+
+services:
+  ssl:
+    image: 'docker.artifactory.adform.com/ca-certs:dev'
+    container_name: ssl
+    command: /bin/sh -c "cp /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-bundle.crt"
+    volumes: 
+      - 'ssl-share:/etc/ssl/certs'
+    networks:
+      - project-network
+  ongdb:
+    image: 'docker.artifactory.adform.com/ciam/ongdb-apoc:latest'
+    container_name: ongdb
+    ports:
+      - "7687:7687"
+      - "7474:7474"
+    healthcheck:
+      test: [ "CMD", "/var/lib/neo4j/bin/cypher-shell",  "MATCH () RETURN count(*) as count" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    env_file:
+      - ./setup/env.ongdb
+    volumes:
+      - './databases/neo4j/data:/data'
+      - './databases/neo4j/import:/import'
+    networks:
+      - project-network
+  rabbitmq:
+    image: 'rabbitmq:3-management'
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: rabbitmq
+      RABBITMQ_DEFAULT_PASS: rabbitmq
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    volumes:
+      - './databases/rabbitmq/data:/data'
+    networks:
+      - project-network
+  aerospike:
+    container_name: aerospike
+    image: aerospike/aerospike-server:4.8.0.5
+    ports:
+      - "3000:3000"
+      - "3001:3001"
+      - "3002:3002"
+      - "3003:3003"
+    environment:
+      NAMESPACE: ciam
+    networks:
+      - project-network
+  zookeeper:
+    container_name: zookeeper
+    image: 'confluentinc/cp-zookeeper:latest'
+    ports:
+      - "2181:2181"
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    networks:
+      - project-network
+  kafka:
+    container_name: kafka
+    image: 'confluentinc/cp-kafka:latest'
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka:9092,EXTERNAL://localhost:29092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_CREATE_TOPICS: >
+        ciam.bloom.master_account_assigments_notification:1:1,
+        ciam_roles_assignments_changed_for_subject_event_dk:1:1
+    depends_on:
+      - zookeeper
+    networks:
+      - project-network
+  postgresql:
+    image: 'sameersbn/postgresql:10-2'
+    container_name: postgresql
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      - DEBUG=false
+      - DB_USER=root
+      - DB_PASS=root
+      - DB_NAME=readmodel
+    volumes:
+      - /srv/docker/postgresql:/var/lib/postgresql
+    networks:
+      - project-network
+  postgresql.admin:
+    image: 'dpage/pgadmin4'
+    container_name: postgresql_admin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "ciam@adform.com"
+      PGADMIN_DEFAULT_PASSWORD: "root"
+    ports:
+      - "16543:80"
+    links:
+      - postgresql
+    networks:
+      - project-network
+  adform.bloom.runtime:
+    image: 'docker.artifactory.adform.com/ciam/adform-bloom-runtime:latest'
+    container_name: adformbloomruntime
+    environment:
+      PORT: "80"  
+      ASPNETCORE_ENVIRONMENT: Development
+    ports:
+      - "5000:80"
+      - "5001:443"
+    volumes: 
+      - 'ssl-share:/etc/ssl/certs'
+    links:
+      - ongdb
+    networks:
+      - project-network
+  adform.bloom.read:
+    image: 'docker.artifactory.adform.com/ciam/adform-bloom-read:latest'
+    container_name: adformbloomread
+    environment:
+      HTTP_PORT: "80"
+      GRPC_PORT: "9696"
+      ASPNETCORE_ENVIRONMENT: Development
+    ports:
+      - "5004:80"
+      - "5005:443"
+      - "9696:9696"
+    volumes: 
+      - 'ssl-share:/etc/ssl/certs'
+    links:
+      - postgresql
+    networks:
+      - project-network
+  adform.bloom:
+    image: "${DOCKER_REGISTRY-}adformbloom"
+    container_name: adformbloom
+    environment:
+      HTTP_PORT: "80"  
+      ASPNETCORE_ENVIRONMENT: Development
+    ports:
+      - "5002:80"
+      - "5003:443"
+    build:
+      context: ./
+      dockerfile: ./src/Adform.Bloom.Api/Dockerfile
+    volumes: 
+      - 'ssl-share:/etc/ssl/certs'
+    links:
+      - ongdb
+      - rabbitmq
+      - adform.bloom.runtime
+      - adform.bloom.read
+    networks:
+      - project-network
+networks:
+  project-network:
+    external: true
+volumes:
+  ssl-share:
+    name: 'ssl-share'
+    driver: local 

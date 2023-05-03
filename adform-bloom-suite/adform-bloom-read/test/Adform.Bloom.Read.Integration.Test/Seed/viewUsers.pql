@@ -1,0 +1,43 @@
+﻿
+CREATE OR REPLACE VIEW users AS 
+    (   
+        (SELECT
+            ma.id,
+            ma.username,
+            ma.email,
+            ma.name,
+            ma.phone,
+            ma.timezone,
+            ma.locale,
+            ma.first_name,
+            ma.last_name,
+            ma.company,
+            ma.title,
+            COALESCE(ll.two_factor_required, false) AS two_factor_required,
+            COALESCE(ll.notifications_disabled, false) AS notifications_disabled,
+            COALESCE(ll.status, 0) AS status,
+            0 AS type
+        FROM
+            public.master_accounts as ma
+        LEFT JOIN public.local_logins as ll 
+            ON ma.id = ll.id)
+    UNION
+        SELECT 
+            id,
+            username,
+            email,
+            name,
+            NULL AS phone,
+            NULL AS timezone,
+            NULL AS locale,
+            NULL AS first_name,
+            NULL AS last_name,
+            NULL AS company,
+            NULL AS title,
+            COALESCE(NULL, false) AS two_factor_required,
+            COALESCE(NULL, false) AS notifications_disabled,
+            COALESCE(NULL, 0) AS status, 
+            1 AS type
+        FROM 
+            public.traffickers
+    );

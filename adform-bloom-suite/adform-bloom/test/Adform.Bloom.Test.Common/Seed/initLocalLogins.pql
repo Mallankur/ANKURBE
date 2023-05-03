@@ -1,0 +1,15 @@
+﻿INSERT INTO public.local_logins (id,
+notifications_disabled,
+status,
+two_factor_required
+)
+VALUES 											   
+('bf15ab64-ff92-4143-99df-2f409652e2e3','false','1','true'),
+('050c54d3-a928-4430-baa2-910a9526c505','false','1','false'),
+('058c54d3-a928-4430-baa2-910a9526c505','false','1','false'),
+('058c54d3-a928-4430-baa2-950a9526c505','false','1','false'),
+('058c54d3-a928-4430-1111-910a9526c000','false','1','false'),
+('e32539ac-3c97-48c6-80a5-cdf78635148a','false','1','false'),
+('e32539ac-3c97-48c6-80a5-cdf78635148b','false','1','false'),
+('e65399fe-b720-436c-b21e-f97ed9c968cb','false','1','false'),
+('d6d5f3e8-5578-464e-a7a6-f5107102e527','false','1','false');

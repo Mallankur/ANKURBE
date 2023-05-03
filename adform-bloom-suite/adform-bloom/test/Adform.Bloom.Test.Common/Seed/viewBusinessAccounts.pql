@@ -1,0 +1,9 @@
+﻿CREATE OR REPLACE VIEW public.business_accounts AS 
+	(SELECT id,legacy_id,name,status, 0 AS type FROM adform
+	UNION
+	SELECT id,legacy_id,name,status, 1 AS type FROM agencies
+	UNION
+	SELECT id,legacy_id,name,status, 2 AS type FROM publishers
+	UNION
+	SELECT id,legacy_id,name,status, 3 AS type FROM data_providers
+	);

@@ -1,0 +1,29 @@
+{
+  "Correct": {
+    "NpgSql": {
+      "Host": "localhost",
+      "Port": 5432,
+      "Database": "default",
+      "UserName": "root",
+      "Password": "root"
+    }
+  },
+  "MissingHosts": {
+    "NpgSql": {
+      "Host": "",
+      "Port": 5432,
+      "Database": "default",
+      "UserName": "root",
+      "Password": "root"
+    }
+  },
+  "PortIsNegative": {
+    "NpgSql": {
+      "Host": "localhost",
+      "Port": -5432,
+      "Database": "default",
+      "UserName": "root",
+      "Password": "root"
+    }
+  }
+}

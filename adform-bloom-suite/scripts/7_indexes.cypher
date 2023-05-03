@@ -1,0 +1,5 @@
+CREATE INDEX ON :Tenant(Id);
+CREATE INDEX ON :Policy(Id);
+CREATE INDEX ON :Subject(Id);
+CREATE INDEX ON :Feature(Id);
+CREATE INDEX ON :Role(Id);

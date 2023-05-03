@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Adform.Ciam.Aerospike" Version="0.0.5" />
+        <PackageReference Include="Adform.Ciam.Cache" Version="0.0.5" />
+        <PackageReference Include="Adform.Ciam.Health" Version="0.0.5" />
+        <PackageReference Include="Adform.Ciam.OngDb.Pure" Version="0.0.5" />
+        <PackageReference Include="Adform.Ciam.Monitoring" Version="0.0.5" />
+        <PackageReference Include="Scrutor" Version="4.2.0" />
+    </ItemGroup>
+    <ItemGroup>
+      <ProjectReference Include="..\Adform.Bloom.Runtime.Application\Adform.Bloom.Runtime.Application.csproj" />
+    </ItemGroup>
+
+</Project>

@@ -1,0 +1,177 @@
+---
+pipeline:
+  build:
+    group: pre_featuredeployment
+    image: docker.artifactory.adform.com/dotnet/sdk:6.0.100-bullseye-slim
+    commands:
+      - dotnet build --configuration ${DOTNET_CONFIGURATION=Release} ./src/Adform.Bloom.Runtime.Api/Adform.Bloom.Runtime.Api.csproj
+    when:
+      event:
+        exclude: [tag, deployment]
+
+  docker-image-temporary:
+    group: pre_featuredeployment
+    image: docker.artifactory.adform.com/drone-plugins/docker
+    repo: docker.artifactory.adform.com/ciam/adform-bloom-runtime
+    tags:
+      - "${DRONE_COMMIT_SHA:0:10}"
+    when:
+      event: push
+
+  integration-test-host:
+    image: docker.artifactory.adform.com/ciam/adform-bloom-runtime:${DRONE_COMMIT_SHA:0:10}
+    detach: true
+    ports: "80:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=testenv
+    when:
+      event: push
+
+  integration-test-run:
+    group: post_featuredeployment
+    image: docker.artifactory.adform.com/dotnet/sdk:6.0.100-bullseye-slim
+    commands:
+      - dotnet test --configuration ${DOTNET_CONFIGURATION=Release} ./test/Adform.Bloom.Runtime.Integration.Test /p:CollectCoverage=true /p:CoverletOutputFormat=\"opencover,lcov\"
+    when:
+      event: push
+
+  unit-test:
+    group: qa
+    image: docker.artifactory.adform.com/dotnet/sdk:6.0.100-bullseye-slim
+    commands:
+      - dotnet test --configuration ${DOTNET_CONFIGURATION=Release} ./test/Adform.Bloom.Runtime.Read.Test /p:CollectCoverage=true /p:CoverletOutputFormat=\"opencover,lcov\"
+      - dotnet test --configuration ${DOTNET_CONFIGURATION=Release} ./test/Adform.Bloom.Runtime.Api.Test /p:CollectCoverage=true /p:CoverletOutputFormat=\"opencover,lcov\"
+      - dotnet test --configuration ${DOTNET_CONFIGURATION=Release} ./test/Adform.Bloom.Runtime.Architecture.Test /p:CollectCoverage=true /p:CoverletOutputFormat=\"opencover,lcov\"
+    when:
+      event:
+        exclude: deployment
+
+  sonarQube-featurebranch:
+    group: post-test
+    environment:
+      - SONAR_URL=https://sonarqube.adform.com/
+      - PLUGIN_REPORTS=./test/*/coverage.opencover.xml
+      - PLUGIN_BUILD_PATH=./src/Adform.Bloom.Runtime.Api
+      - PLUGIN_SONAR_GATE_SKIP=false
+    commands:
+      - sonarScan
+    secrets: [sonar_login]
+    image: docker.artifactory.adform.com/ciam/sonarqube-qualitygate-docker
+    pull: true
+    when:
+      branch:
+        exclude: master
+      event:
+        exclude: [tag, deployment]
+
+  sonarQube-master:
+    group: post-test
+    environment:
+      - SONAR_URL=https://sonarqube.adform.com/
+      - PLUGIN_REPORTS=./test/*/coverage.opencover.xml
+      - PLUGIN_BUILD_PATH=./src/Adform.Bloom.Runtime.Api
+    commands:
+      - sonarScan
+    secrets: [sonar_login]
+    image: docker.artifactory.adform.com/ciam/sonarqube-qualitygate-docker
+    pull: true
+    when:
+      branch: master
+      event:
+        exclude: [tag, deployment]
+
+  mark-images:
+    image: docker.artifactory.adform.com/drone-plugins/image-marker
+    pull: true
+    secrets: [username, password]
+    file_path: "ciam/adform-bloom-runtime/*"
+    properties: "safe_to_delete=true"
+    versions_to_keep: 15
+    older_than: "1mo"
+    dry_run: false
+    environment:
+      - PLUGIN_DEBUG=true
+    when:
+      event: push
+      branch: master
+
+  docker-image-master:
+    image: docker.artifactory.adform.com/drone-plugins/docker
+    repo: docker.artifactory.adform.com/ciam/adform-bloom-runtime
+    tags:
+      - "${DRONE_COMMIT_SHA:0:10}"
+      - "${DRONE_TAG##v}"
+      - latest
+    when:
+      branch: master
+      event: tag
+
+  helm-deploy-dev-featurebranch:
+    group: post-test
+    image: docker.artifactory.adform.com/drone-plugins/helm
+    chart: stable/base-simple
+    chart_version: 1.3.*
+    release: adform-bloom-runtime-${DRONE_COMMIT_BRANCH,,}
+    namespace: adform-bloom
+    deploy_environment: "d1"
+    secrets: ["d1_kubernetes_token"]
+    values_files: ["./helm/values.yaml", "./helm/values.d1.yaml"]
+    string_values:
+      [
+        "image.tag=${DRONE_COMMIT_SHA:0:10}",
+        "feature=${DRONE_COMMIT_BRANCH,,}",
+        "replicaCount=1",
+        "strategy.rollingUpdate.maxUnavailable=0%",
+      ]
+    when:
+      branch:
+        exclude: master
+      event: push
+
+  clear-docker-image-temporary:
+    image: docker.artifactory.adform.com/rip/buildenv-jvm:1.0.0-5-e773646 # image with curl, can be replaced
+    secrets: [username, password]
+    commands:
+      - curl -k -u $${USERNAME}:$${PASSWORD} -X DELETE "https://artifactory.adform.com/artifactory/docker-local/ciam/adform-bloom-runtime/${DRONE_COMMIT_SHA:0:10}"
+    when:
+      event: push
+      status: [success, failure]
+
+  helm-deploy-master:
+    image: docker.artifactory.adform.com/drone-plugins/helm
+    chart: stable/base-simple
+    chart_version: 1.3.*
+    release: adform-bloom-runtime
+    namespace: adform-bloom
+    deploy_environment: "${DRONE_DEPLOY_TO,,}"
+    secrets: ["${DRONE_DEPLOY_TO,,}_kubernetes_token"]
+    values_files:
+      ["./helm/values.yaml", "./helm/values.${DRONE_DEPLOY_TO,,}.yaml"]
+    string_values: "image.tag=${DRONE_TAG##v}"
+    timeout: 5m
+    when:
+      event: deployment
+      environment: [d1, pp, pr]
+
+services:
+  ongdb:
+    image: docker.artifactory.adform.com/ciam/ongdb:latest
+    container_name: ongdb
+    environment:
+      - NEO4J_AUTH=neo4j/password
+    ports:
+      - "7687:7687"
+      - "7474:7474"
+    when:
+      event: push
+  aerospike:
+    image: aerospike/aerospike-server:4.8.0.5
+    ports:
+      - "3000:3000"
+      - "3001:3001"
+      - "3002:3002"
+      - "3003:3003"
+    environment:
+      - NAMESPACE=ciam
+    when:
+      event: push

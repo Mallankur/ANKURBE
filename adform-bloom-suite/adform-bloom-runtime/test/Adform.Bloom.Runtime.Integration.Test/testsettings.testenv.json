@@ -1,0 +1,16 @@
+{
+  "Host": "http://adform.bloom.runtime",
+  "Aerospike": {
+    "Hosts": [
+      "aerospike"
+    ],
+    "Port": 3000,
+    "Namespace": "ciam",
+    "Set": "Bloom-runtime-integration-tests"
+  },
+  "OngDB": {
+    "Host": "bolt://ongdb:7687",
+    "UserName": "neo4j",
+    "Password": "password"
+  }
+}

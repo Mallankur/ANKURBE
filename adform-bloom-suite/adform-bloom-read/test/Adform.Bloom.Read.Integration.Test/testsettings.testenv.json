@@ -1,0 +1,10 @@
+{
+  "Host": "http://integration-test-host:9696",
+  "NpgSql": {
+    "Host": "postgresql",
+    "Database": "readmodel",
+    "Port": 5432,
+    "UserName": "root",
+    "Password": "root"
+  }
+}

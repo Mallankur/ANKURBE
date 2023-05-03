@@ -1,0 +1,3 @@
+﻿INSERT INTO public.data_providers (id,legacy_id,name,status)
+VALUES
+('49195836-874c-4db2-b954-a4ee70717eab','2','Tenant2','1');

@@ -1,0 +1,14 @@
+﻿CREATE TABLE IF NOT EXISTS master_accounts
+            (
+                id UUID PRIMARY KEY,
+                username VARCHAR,
+                email VARCHAR,
+                name VARCHAR,
+                phone VARCHAR,
+                timezone VARCHAR,
+                locale VARCHAR,
+                first_name varchar,
+                last_name varchar,
+                company varchar,
+                title varchar
+            )

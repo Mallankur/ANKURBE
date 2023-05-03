@@ -1,0 +1,3 @@
+﻿INSERT INTO public.publishers (id,legacy_id,name,status)
+VALUES
+('108b9151-15d3-4cbb-b4ec-fef42c4c5567','3','Tenant3','1');

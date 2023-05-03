@@ -1,0 +1,12 @@
+ingress:
+  enabled: true
+  path: /
+  hosts:
+    - adform-bloom-read.app.d1.adform.zone
+  tls:
+    - hosts: [adform-bloom-read.app.d1.adform.zone]
+
+featureTTL: "48h"
+
+environment:
+  ASPNETCORE_ENVIRONMENT: d1

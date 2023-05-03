@@ -1,0 +1,37 @@
+---
+name: Kubernetes Deployment
+
+on: deployment
+
+env:
+  NAMESPACE: adform-bloom
+  RELEASE:  adform-bloom
+  CHART_VERSION: 1.*.*
+
+jobs:
+  deploy:
+    name: Deploy to ${{ github.event.deployment.environment }}
+    runs-on: [self-hosted, linux]
+    if: ${{ github.event.deployment.payload.source == 'manual' }}
+    environment:
+      name: ${{ github.event.deployment.environment }}
+      url: ${{ steps.deploy.outputs.endpoint }}
+    concurrency:
+      group: ${{ github.repository }}-${{ github.event.deployment.environment }}
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions-adform/variables@v1
+      - uses: actions-adform/deploy-helm@v1
+        name: Deploy
+        id: deploy
+        with:
+          kubernetes-token: ${{ secrets.KUBERNETES_TOKEN }}
+          kubernetes-namespace: ${{ env.NAMESPACE }}
+          release: ${{ env.RELEASE }}
+          environment: ${{ github.event.deployment.environment }}
+          chart-version: ${{ env.CHART_VERSION }}
+          value-files: |
+            ./helm/values.yaml
+            ./helm/values.${{ env.ADFORM_DEPLOY_TIER_LC }}.yaml
+          value-strings: |
+            image.tag=${{ env.ADFORM_TAG_TRIM_V }}

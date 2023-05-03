@@ -1,0 +1,26 @@
+
+replicaCount: 3
+
+ingress:
+  enabled: true
+  path: /
+  hosts: 
+    - adform-bloom-read.app.pr.adform.zone
+  tls:
+    - hosts: [adform-bloom-read.app.pr.adform.zone]
+
+resources:
+ limits:
+   cpu: 1000m
+   memory: 3Gi
+ requests:
+   cpu: 300m
+   memory: 1.5Gi
+    
+autoscaler:
+  enabled: true
+  maxReplicaCount: 5
+  targetAverageUtilization: 90
+
+environment:
+  ASPNETCORE_ENVIRONMENT: pr

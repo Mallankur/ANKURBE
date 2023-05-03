@@ -1,0 +1,39 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <LangVersion>10.0</LangVersion>
+        <WarningsAsErrors>CS8600;CS8601;CS8602;CS8603;CS8604;CS8618;CS8625</WarningsAsErrors>
+        <ProjectGuid>FAE04EC0-301F-11D3-BF4B-00C04F79EFBC</ProjectGuid>
+        <UserSecretsId>b9c4395a-4fa7-488a-a57b-2e6177da2cef</UserSecretsId>
+        <EnableUnsafeBinaryFormatterSerialization>true</EnableUnsafeBinaryFormatterSerialization>
+        <SonarQubeExclude>true</SonarQubeExclude>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+        <DockerfileContext>..\..</DockerfileContext>
+        <DockerComposeProjectPath>..\..\docker-compose.dcproj</DockerComposeProjectPath>
+        <RootNamespace>Adform.Bloom.Runtime.Host</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Adform.Bloom.Events" Version="1.0.0" />
+        <PackageReference Include="Adform.Ciam.Authentication" Version="0.0.5" />
+        <PackageReference Include="Adform.Ciam.Authorization" Version="0.0.5" />
+        <PackageReference Include="Adform.Ciam.Cache" Version="0.0.5" />
+        <PackageReference Include="Adform.Ciam.Configuration" Version="0.0.5" />
+        <PackageReference Include="Adform.Ciam.Swagger" Version="0.0.5" />
+        <PackageReference Include="Adform.Ciam.ExceptionHandling" Version="0.0.5" />
+        <PackageReference Include="Adform.Ciam.Logging" Version="0.0.5" />
+        <PackageReference Include="Adform.Ciam.Health" Version="0.0.5" />
+        <PackageReference Include="Adform.Ciam.SharedKernel" Version="0.0.5" />
+        <PackageReference Include="Aerospike.Extensions.Caching" Version="2.0.0" />
+        <PackageReference Include="CorrelationId" Version="3.0.1" />
+        <PackageReference Include="Adform.Ciam.GraphQLAdvanced" Version="0.0.5" />
+        <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="10.0.1" />
+        <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.6" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Adform.Bloom.Runtime.Infrastructure\Adform.Bloom.Runtime.Infrastructure.csproj" />
+        <ProjectReference Include="..\Adform.Bloom.Runtime.Domain\Adform.Bloom.Runtime.Domain.csproj" />
+    </ItemGroup>
+</Project>

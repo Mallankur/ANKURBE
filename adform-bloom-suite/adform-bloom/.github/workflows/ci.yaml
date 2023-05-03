@@ -1,0 +1,264 @@
+---
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+  release:
+    types: [created]
+
+concurrency:
+  group: ${{ github.repository }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  #NUGET_PACKAGES: /opt/github/cache/${{ github.repository }}/nuget
+  DOTNET_VERSION: 6.0.*
+  DOTNET_CONFIGURATION: Release
+  RELEASE: adform-bloom
+  NAMESPACE: adform-bloom
+
+jobs:
+  build:
+    name: Build
+    runs-on: [self-hosted, linux]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions-adform/variables@v1
+      - uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+      - name: Build
+        run: |
+          dotnet clean ./Adform.Bloom.sln
+          dotnet restore ./Adform.Bloom.sln --no-cache --force
+          dotnet build --configuration ${{ env.DOTNET_CONFIGURATION }} ./Adform.Bloom.sln --no-restore
+
+  unit-test:
+    name: Unit Test
+    runs-on: [self-hosted, linux]
+    needs: build
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions-adform/variables@v1
+      - uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+      - name: Unit tests
+        run: |
+          dotnet test --configuration ${{ env.DOTNET_CONFIGURATION }} ./test/Adform.Bloom.Unit.Test /p:CollectCoverage=true /p:CoverletOutputFormat=\"opencover,lcov\" 
+          dotnet test --configuration ${{ env.DOTNET_CONFIGURATION }} ./test/Adform.Bloom.Architecture.Test /p:CollectCoverage=true /p:CoverletOutputFormat=\"opencover,lcov\"
+
+  publish-temporal:
+    name: Publish Docker Temporal
+    if: github.event_name == 'pull_request' || github.event_name == 'release'
+    runs-on: [self-hosted, linux]
+    needs: unit-test
+    outputs:
+      image-tag: ${{ env.ADFORM_SHA_SUB_10 }}
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions-adform/variables@v1
+      - uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+      - name: DotNET Publish
+        run: dotnet publish ./src/Adform.Bloom.Api --output ${{ github.workspace }}/output
+      - name: Docker Publish
+        uses: actions-adform/publish-docker@v1
+        with:
+          ttl: 7d
+          tags: |
+            ${{ env.ADFORM_SHA_SUB_10 }}
+
+  integration-acceptance-test:
+    name: Integration & Acceptance tests
+    if: github.event_name == 'pull_request' || github.event_name == 'release'
+    runs-on: [self-hosted, linux]
+    needs: publish-temporal
+    container: 
+      image: docker.artifactory.adform.com/dotnet/sdk:6.0
+      env: 
+        ASPNETCORE_ENVIRONMENT: testenv
+      volumes:
+        - /etc/pki/tls/certs/ca-bundle.crt:/etc/ssl/certs/ca-certificates.crt:ro
+    services:
+      ongdb:
+        image: docker.artifactory.adform.com/ciam/ongdb-apoc:latest
+        env:
+          NEO4J_AUTH: none
+        options: >-
+          --health-cmd "/var/lib/neo4j/bin/cypher-shell \"MATCH () RETURN count(*) as count\""
+          --health-interval 30s
+          --health-timeout 10s
+          --health-retries 5
+      rabbitmq:
+        image: docker.artifactory.adform.com/ciam/rabbitmq:3-management
+        env:
+          RABBITMQ_DEFAULT_USER: rabbitmq
+          RABBITMQ_DEFAULT_PASS: rabbitmq
+      postgresql:
+        image: docker.artifactory.adform.com/ciam/postgresql:10-2
+        env:
+          DB_USER: root
+          DB_PASS: root
+          DB_NAME: readmodel
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+      aerospike:
+        image: aerospike/aerospike-server:4.8.0.5
+        env:
+          NAMESPACE: ciam
+      zookeeper:
+        image: confluentinc/cp-zookeeper:latest
+        env:
+          ZOOKEEPER_TICK_TIME: 2000
+          ZOOKEEPER_CLIENT_PORT: 2181
+      kafka:
+        image: confluentinc/cp-kafka:latest
+        env:
+          KAFKA_BROKER_ID: 1
+          KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+          KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka:9092,EXTERNAL://localhost:29092
+          KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT
+          KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+          KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+          ALLOW_PLAINTEXT_LISTENER: yes
+          KAFKA_CREATE_TOPICS: ciam.bloom.master_account_assigments_notification:1:1,ciam_roles_assignments_changed_for_subject_event_dk:1:1
+      adform.bloom.runtime:
+        image: docker.artifactory.adform.com/ciam/adform-bloom-runtime:latest
+        env:
+          ASPNETCORE_ENVIRONMENT: Development
+          HTTP_PORT: 80
+        volumes:
+          - /etc/pki/tls/certs/ca-bundle.crt:/etc/ssl/certs/ca-certificates.crt:ro
+      adform.bloom.read:
+        image: docker.artifactory.adform.com/ciam/adform-bloom-read:latest
+        env:
+          ASPNETCORE_ENVIRONMENT: Development
+          HTTP_PORT: 80
+          GRPC_PORT: 9696
+        volumes:
+          - /etc/pki/tls/certs/ca-bundle.crt:/etc/ssl/certs/ca-certificates.crt:ro
+      adform.bloom:
+        image: docker.artifactory.adform.com/ciam/adform-bloom:${{needs.publish-temporal.outputs.image-tag}}
+        env:
+          ASPNETCORE_ENVIRONMENT: Development
+          HTTP_PORT: 80
+        volumes:
+          - /etc/pki/tls/certs/ca-bundle.crt:/etc/ssl/certs/ca-certificates.crt:ro
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions-adform/variables@v1
+      - uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+      - name: Integration tests
+        run: |
+          dotnet test --configuration ${{ env.DOTNET_CONFIGURATION }} ./test/Adform.Bloom.Integration.Test /p:CollectCoverage=true /p:CoverletOutputFormat=\"opencover,lcov\"
+      - name: Acceptance tests
+        run: |
+          dotnet test --configuration ${{ env.DOTNET_CONFIGURATION }} ./test/Adform.Bloom.Acceptance.Test /p:CollectCoverage=true /p:CoverletOutputFormat=\"opencover,lcov\"
+
+  publish-latest:
+    name: Publish Docker
+    if: github.event_name == 'release'
+    runs-on: [self-hosted, linux]
+    needs: integration-acceptance-test
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions-adform/variables@v1
+      - uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+      - name: DotNET Publish
+        run: dotnet publish ./src/Adform.Bloom.Api --output ${{ github.workspace }}/output
+      - name: Docker Publish
+        uses: actions-adform/publish-docker@v1
+        with:
+          tags: |
+            ${{ env.ADFORM_SHA_SUB_10 }}
+            ${{ env.ADFORM_TAG_TRIM_V }}
+            latest
+
+  publish-nuget:
+    name: Publish Nuget [Adform.Bloom.Messages]
+    if: github.event_name == 'release'
+    runs-on: [self-hosted, linux]
+    needs: integration-acceptance-test
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions-adform/variables@v1
+      - uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+      - name: Pack
+        run: |
+          dotnet pack ./src/Adform.Bloom.Messages --configuration Release --output  ${{ github.workspace }}/nupkgs/
+      - name: Publish
+        uses: actions-adform/publish-generic@v1
+        with:
+          path: nuget-local/ciam/Adform.Bloom.Messages/
+          sources: 'nupkgs/*.nupkg'
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+
+  feature-deploy:
+    name: Deploy feature (D1)
+    if: github.event_name == 'pull_request' && github.ref != 'refs/heads/master'
+    runs-on: [self-hosted, linux]
+    needs: integration-acceptance-test
+    environment:
+      name: D1
+      url: ${{ steps.deploy.outputs.endpoint }}
+    concurrency:
+      group: ${{ github.repository }}-${{ github.event.deployment.environment }}
+      cancel-in-progress: true
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions-adform/variables@v1
+      - uses: actions-adform/deploy-helm@v1
+        name: Deploy
+        id: deploy
+        with:
+          kubernetes-token: ${{ secrets.KUBERNETES_TOKEN }}
+          kubernetes-namespace: ${{ env.NAMESPACE }}
+          release: ${{ env.RELEASE }}-${{ env.ADFORM_BRANCH_SLASH_TO_DASH }}
+          environment: D1
+          value-files: |
+            ./helm/values.yaml
+            ./helm/values.d1.yaml
+          value-strings: |
+            image.tag=${{ env.ADFORM_SHA_SUB_10 }}
+            feature=${{ env.ADFORM_BRANCH_SLASH_TO_DASH }}
+            replicaCount=1
+            strategy.rollingUpdate.maxUnavailable=0%
+
+  feature-publish-nuget:
+    name: Feature Publish Nuget [Adform.Bloom.Messages]
+    if: github.event_name == 'pull_request' && github.ref != 'refs/heads/master'
+    runs-on: [self-hosted, linux]
+    needs: integration-acceptance-test
+    concurrency:
+      group: ${{ github.repository }}-${{ github.event.deployment.environment }}-feature
+      cancel-in-progress: true
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions-adform/variables@v1
+      - uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+      - name: Pack
+        run: |
+          dotnet pack ./src/Adform.Bloom.Messages --configuration Release --output ${{ github.workspace }}/nupkgs/  --version-suffix "beta"
+      - name: Publish
+        uses: actions-adform/publish-generic@v1
+        with:
+          path: nuget-local/ciam/Adform.Bloom.Messages/
+          sources: 'nupkgs/*.nupkg'
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}

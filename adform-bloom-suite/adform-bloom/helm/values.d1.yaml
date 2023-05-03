@@ -1,0 +1,21 @@
+ingress:
+  enabled: true
+  annotations: {}
+  path: /
+  hosts:
+    - adform-bloom.app.d1.adform.zone
+  tls:
+    - hosts: [adform-bloom.app.d1.adform.zone]
+
+featureTTL: "48h"
+
+environment:
+  ASPNETCORE_ENVIRONMENT: d1
+
+resources:
+  limits:
+    cpu: 100m
+    memory: 2Gi
+  requests:
+    cpu: 50m
+    memory: 1Gi

@@ -1,0 +1,50 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <LangVersion>10.0</LangVersion>
+    <WarningsAsErrors>CS8600;CS8601;CS8602;CS8603;CS8604;CS8618;CS8625</WarningsAsErrors>
+    <ProjectGuid>74CA5D8B-5C53-494A-8D30-FCEBEEB5C36C</ProjectGuid>
+    <UserSecretsId>b9c4395a-4fa7-488a-a57b-2e6177da2cef</UserSecretsId>
+    <SonarQubeExclude>true</SonarQubeExclude>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    <DockerfileContext>..\..</DockerfileContext>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Adform.Ciam.Authentication" Version="0.0.5" />
+    <PackageReference Include="Adform.Ciam.Authorization" Version="0.0.5" />
+    <PackageReference Include="Adform.Ciam.Configuration" Version="0.0.5" />
+    <PackageReference Include="Adform.Ciam.ExceptionHandling" Version="0.0.5" />
+    <PackageReference Include="Adform.Ciam.Logging" Version="0.0.5" />
+    <PackageReference Include="Adform.Ciam.Swagger" Version="0.0.5" />
+    <PackageReference Include="Adform.Ciam.Health" Version="0.0.5" />
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="10.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Adform.Bloom.Read.Contracts\Adform.Bloom.Read.Contracts.csproj" />
+    <ProjectReference Include="..\Adform.Bloom.Read.Infrastructure\Adform.Bloom.Read.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="appsettings.json">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Update="appsettings*.json">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="serverl3.pfx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

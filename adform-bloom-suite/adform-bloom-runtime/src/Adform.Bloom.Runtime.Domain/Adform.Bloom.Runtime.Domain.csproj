@@ -1,0 +1,10 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <LangVersion>10.0</LangVersion>
+        <WarningsAsErrors>CS8600;CS8601;CS8602;CS8603;CS8604;CS8618;CS8625</WarningsAsErrors>
+        <ProjectGuid>{3C20C84C-92B4-4370-BA04-0DCBBBB7D6B6}</ProjectGuid>
+        <RootNamespace>Adform.Bloom.Runtime.Read</RootNamespace>
+    </PropertyGroup>
+</Project>

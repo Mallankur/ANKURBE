@@ -1,0 +1,10 @@
+ingress:
+  enabled: true
+  path: /
+  hosts: 
+    - adform-bloom-read.app.pp.adform.zone
+  tls:
+    - hosts: [adform-bloom-read.app.pp.adform.zone]
+
+environment:
+  ASPNETCORE_ENVIRONMENT: pp

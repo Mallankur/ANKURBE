@@ -1,0 +1,14 @@
+﻿INSERT INTO public.agencies (id,legacy_id,name,status)
+VALUES
+('ea0d54a3-1d54-4410-a2a0-55548baa4587','1','Tenant1','1'),
+('287f9d9d-5917-4721-8e24-fa4e352099f1','4','Tenant4','1'),
+('b214781b-5235-42c1-a89f-93a30c364eef','5','Tenant5','1'),
+('0748600c-e328-48df-8ec9-be52af4f0889','6','Tenant6','1'),
+('858e4425-72ca-4113-8fe9-27fa5b034878','7','Tenant7','1'),
+('d2b69ddb-fe00-4c5d-916f-b71877dac4c8','8','Tenant8','1'),
+('ce006fd5-3339-40de-b553-d12c2a136b3c','9','Tenant9','1'),
+('d5a39696-5c2e-4047-b5c4-e318b81bbc61','10','Tenant10','1'),
+('7bbd00be-ab52-4e7f-b75e-dd91276dc360','11','Tenant11','1'),
+('ab5ad0f7-7643-467e-9f26-a6ddede2e268','12','Tenant12','1'),
+('8ffc490c-a173-4499-92b3-686e2fe32bf8','13','Tenant13','1'),
+('c8231bb6-a453-4683-835b-4c972e62b5f9','14','Tenant14','1');

@@ -1,0 +1,95 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29519.87
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adform.Bloom.Runtime.Host", "src\Adform.Bloom.Runtime.Host\Adform.Bloom.Runtime.Host.csproj", "{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adform.Bloom.Runtime.Domain", "src\Adform.Bloom.Runtime.Domain\Adform.Bloom.Runtime.Domain.csproj", "{3C20C84C-92B4-4370-BA04-0DCBBBB7D6B6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{26F3E5A9-0029-4646-A1F7-82B3FF4C6B8F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adform.Bloom.Runtime.Unit.Test", "test\Adform.Bloom.Runtime.Unit.Test\Adform.Bloom.Runtime.Unit.Test.csproj", "{3C903483-4430-4111-95E6-328FE759E131}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adform.Bloom.Runtime.Architecture.Test", "test\Adform.Bloom.Runtime.Architecture.Test\Adform.Bloom.Runtime.Architecture.Test.csproj", "{803D80FE-2C50-4BA1-A1CF-F54F9A5AAD52}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adform.Bloom.Runtime.Integration.Test", "test\Adform.Bloom.Runtime.Integration.Test\Adform.Bloom.Runtime.Integration.Test.csproj", "{5A4CDF4E-E467-4691-BE08-06D7430B63AB}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{1598DF90-5407-4D88-9C18-173FEDD21229}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Adform.Bloom.Runtime.Host.Test", "test\Adform.Bloom.Runtime.Host.Test\Adform.Bloom.Runtime.Host.Test.csproj", "{96057BB6-DEB2-4439-AFE5-E5CBA0B317A2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Adform.Bloom.Runtime.Contracts", "src\Adform.Bloom.Runtime.Contracts\Adform.Bloom.Runtime.Contracts.csproj", "{5EA22BDB-C250-4425-8445-402B7B23CB11}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Adform.Bloom.Runtime.Client", "src\Adform.Bloom.Runtime.Client\Adform.Bloom.Runtime.Client.csproj", "{C9ECB319-00D0-4526-9082-A38E625202A1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Adform.Bloom.Runtime.Application", "src\Adform.Bloom.Runtime.Application\Adform.Bloom.Runtime.Application.csproj", "{99E6A3A5-83C0-43B9-AAB0-6897832E6519}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Adform.Bloom.Runtime.Infrastructure", "src\Adform.Bloom.Runtime.Infrastructure\Adform.Bloom.Runtime.Infrastructure.csproj", "{02EBFB86-B9DA-4C8E-845C-D8294C581F8F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "extra", "extra", "{054ACFAD-5B66-4F3D-9A11-C2FC7FE2B467}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3C20C84C-92B4-4370-BA04-0DCBBBB7D6B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C20C84C-92B4-4370-BA04-0DCBBBB7D6B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C20C84C-92B4-4370-BA04-0DCBBBB7D6B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C20C84C-92B4-4370-BA04-0DCBBBB7D6B6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3C903483-4430-4111-95E6-328FE759E131}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C903483-4430-4111-95E6-328FE759E131}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C903483-4430-4111-95E6-328FE759E131}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C903483-4430-4111-95E6-328FE759E131}.Release|Any CPU.Build.0 = Release|Any CPU
+		{803D80FE-2C50-4BA1-A1CF-F54F9A5AAD52}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{803D80FE-2C50-4BA1-A1CF-F54F9A5AAD52}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{803D80FE-2C50-4BA1-A1CF-F54F9A5AAD52}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{803D80FE-2C50-4BA1-A1CF-F54F9A5AAD52}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5A4CDF4E-E467-4691-BE08-06D7430B63AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5A4CDF4E-E467-4691-BE08-06D7430B63AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5A4CDF4E-E467-4691-BE08-06D7430B63AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5A4CDF4E-E467-4691-BE08-06D7430B63AB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1598DF90-5407-4D88-9C18-173FEDD21229}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1598DF90-5407-4D88-9C18-173FEDD21229}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1598DF90-5407-4D88-9C18-173FEDD21229}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1598DF90-5407-4D88-9C18-173FEDD21229}.Release|Any CPU.Build.0 = Release|Any CPU
+		{96057BB6-DEB2-4439-AFE5-E5CBA0B317A2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{96057BB6-DEB2-4439-AFE5-E5CBA0B317A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{96057BB6-DEB2-4439-AFE5-E5CBA0B317A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{96057BB6-DEB2-4439-AFE5-E5CBA0B317A2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5EA22BDB-C250-4425-8445-402B7B23CB11}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5EA22BDB-C250-4425-8445-402B7B23CB11}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5EA22BDB-C250-4425-8445-402B7B23CB11}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5EA22BDB-C250-4425-8445-402B7B23CB11}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C9ECB319-00D0-4526-9082-A38E625202A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C9ECB319-00D0-4526-9082-A38E625202A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C9ECB319-00D0-4526-9082-A38E625202A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C9ECB319-00D0-4526-9082-A38E625202A1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{99E6A3A5-83C0-43B9-AAB0-6897832E6519}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{99E6A3A5-83C0-43B9-AAB0-6897832E6519}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{99E6A3A5-83C0-43B9-AAB0-6897832E6519}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{99E6A3A5-83C0-43B9-AAB0-6897832E6519}.Release|Any CPU.Build.0 = Release|Any CPU
+		{02EBFB86-B9DA-4C8E-845C-D8294C581F8F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{02EBFB86-B9DA-4C8E-845C-D8294C581F8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{02EBFB86-B9DA-4C8E-845C-D8294C581F8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{02EBFB86-B9DA-4C8E-845C-D8294C581F8F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{3C903483-4430-4111-95E6-328FE759E131} = {26F3E5A9-0029-4646-A1F7-82B3FF4C6B8F}
+		{803D80FE-2C50-4BA1-A1CF-F54F9A5AAD52} = {26F3E5A9-0029-4646-A1F7-82B3FF4C6B8F}
+		{5A4CDF4E-E467-4691-BE08-06D7430B63AB} = {26F3E5A9-0029-4646-A1F7-82B3FF4C6B8F}
+		{96057BB6-DEB2-4439-AFE5-E5CBA0B317A2} = {26F3E5A9-0029-4646-A1F7-82B3FF4C6B8F}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {17F33001-4D4D-4588-8E50-2D61914A235A}
+	EndGlobalSection
+EndGlobal

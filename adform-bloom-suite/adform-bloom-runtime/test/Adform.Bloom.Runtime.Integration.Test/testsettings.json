@@ -1,0 +1,68 @@
+{
+  "Host": "http://localhost:5000",
+  "OAuth2": {
+    "ClientId": "bloom.runtime@tests.adform.com",
+    "ClientSecret": "oZIq-TPzMqiUVOoXv5YnMPz0v9w3e4CDPRHArjR1",
+    "TokenEndpointUri": "https://id-preprod.adform.tech/sts/connect/token",
+    "Clients": [
+      {
+        "Subject": "bf15ab64-ff92-4143-99df-2f409652e2e3",
+        "ClientId": "bloom1@tests.adform.com",
+        "ClientSecret": "COtVGRRs3ppdkder1l13viArFcXfdwedq05EDi-R"
+      },
+      {
+        "Subject": "050c54d3-a928-4430-baa2-910a9526c505",
+        "ClientId": "bloom2@tests.adform.com",
+        "ClientSecret": "LEKC99qoDqynLr05xHY6YDBP7kYG6LHNmmiQkAfV"
+      },
+      {
+        "Subject": "058c54d3-a928-4430-baa2-910a9526c505",
+        "ClientId": "bloom3@tests.adform.com",
+        "ClientSecret": "yWOB7a85nrQwtetTFYSPhQ7SjThHmZl38T0QQ3-t"
+      },
+      {
+        "Subject": "058c54d3-a928-4430-baa2-950a9526c505",
+        "ClientId": "bloom4@tests.adform.com",
+        "ClientSecret": "hRroo8069ndvhal_sT5h64ahXf5A_yYwe78uihJU"
+      },
+      {
+        "Subject": "058c54d3-a928-4430-1111-910a9526c000",
+        "ClientId": "bloom5@tests.adform.com",
+        "ClientSecret": "3uKScVzSMKvIOgcAYKh52WuleE9cbP99i36EiHHp"
+      },
+      {
+        "Subject": "e32539ac-3c97-48c6-80a5-cdf78635148a",
+        "ClientId": "bloom6@tests.adform.com",
+        "ClientSecret": "Ti7JYMacnyKNbH9saYmAU6iqkWJyM_CsnvTiCH5-"
+      },
+      {
+        "Subject": "474107ef-67a1-4c97-bb82-457ac1d90463",
+        "ClientId": "bloom7@tests.adform.com",
+        "ClientSecret": "8ZtwY0rfx7p2AZPGQRJp6uWndGmhIRq5_qUOD38b"
+      },
+      {
+        "Subject": "e32539ac-3c97-48c6-80a5-cdf78635148b",
+        "ClientId": "bloom8@adform.com",
+        "ClientSecret": "XryiYWw8-eJRWTGcS7oFoXRo4b0FRWxu2NaUFkmS"
+      },
+      {
+        "Subject": "f9d4483f-dbde-4c5f-b1ab-f190f9657c4c",
+        "ClientId": "bloomtest@tests.adform.com",
+        "ClientSecret": "Esio6I0FfQeJhP0CDiM89Sv-XQgGy8rfKFWn9RIT"
+      }
+    ] 
+  },
+  "Aerospike": {
+    "Hosts": [
+      "localhost"
+    ],
+    "Port": 3000,
+    "Namespace": "ciam",
+    "Set": "Bloom-runtime-integration-tests"
+  },
+  "OngDB": {
+    "Host": "bolt://localhost:7687",
+    "UserName": "neo4j",
+    "Password": "neo"
+  }
+}

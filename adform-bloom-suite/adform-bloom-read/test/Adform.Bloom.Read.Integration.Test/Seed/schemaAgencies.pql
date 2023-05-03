@@ -1,0 +1,7 @@
+﻿CREATE TABLE IF NOT EXISTS agencies
+            (
+                id UUID PRIMARY KEY,
+                legacy_id int8,
+                name VARCHAR,
+                status int2
+            )

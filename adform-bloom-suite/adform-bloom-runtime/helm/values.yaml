@@ -1,0 +1,45 @@
+tenant: "Scope CIAM"
+
+replicaCount: 2
+
+image:
+  repository: docker.artifactory.adform.com/ciam/adform-bloom-runtime
+
+probes:
+  liveness:
+    initialDelaySeconds: 30
+    periodSeconds: 15
+    failureThreshold: 5
+    successThreshold: 1
+    timeoutSeconds: 1
+    url: /healthy
+  readiness:
+    initialDelaySeconds: 30
+    periodSeconds: 15
+    failureThreshold: 10
+    successThreshold: 1
+    timeoutSeconds: 2
+    url: /ready
+
+maas:
+  enabled: true
+  labels:
+    service: 'adform-bloom-runtime'
+
+laas:
+  enabled: true
+  format: "json"
+
+secrets:
+  enabled: true
+  patch: true
+  vault:
+    secretEnvironment: "adform-bloom/secret-env" # can add subfolder here
+
+resources:
+ limits:
+   cpu: 400m
+   memory: 2Gi
+ requests:
+   cpu: 200m
+   memory: 1Gi

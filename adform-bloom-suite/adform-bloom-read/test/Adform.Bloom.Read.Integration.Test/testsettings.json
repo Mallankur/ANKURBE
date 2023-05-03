@@ -1,0 +1,10 @@
+{
+  "Host": "http://localhost:9696",
+  "NpgSql": {
+    "Host": "localhost",
+    "Database": "readmodel",
+    "Port": 5432,
+    "UserName": "root",
+    "Password": "root"
+  }
+}

@@ -1,0 +1,58 @@
+version: "3.4"
+
+services:
+  postgresql:
+    container_name: postgresql
+    restart: always
+    image: sameersbn/postgresql:10-2
+    ports:
+      - '5432:5432'
+    environment:
+      - DEBUG=false
+      - DB_USER=root
+      - DB_PASS=root
+      - DB_NAME=readmodel
+    volumes:
+      - /srv/docker/postgresql:/var/lib/postgresql
+    networks:
+      - project-network
+  postgresql.admin:
+    container_name: postgresql_admin
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "ciam@adform.com"
+      PGADMIN_DEFAULT_PASSWORD: "root"
+    ports:
+      - '16543:80'
+    volumes:
+        - type: bind
+          source: ./setup/servers.json
+          target: /pgadmin4/servers.json
+          read_only: true
+        - type: bind
+          source: ./setup/password.conf
+          target: /pgadmin4/password.conf
+          read_only: true
+    links:
+      - postgresql
+    networks:
+      - project-network
+  adform.bloom.read:
+    image: ${DOCKER_REGISTRY-}adformbloomread
+    container_name: adformbloomread
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+    ports:
+      - "5004:80"
+      - "5005:443"
+      - "9696:9696"
+    build:
+      context: ./
+      dockerfile: ./src/Adform.Bloom.Read.Host/Dockerfile
+    links:
+      - postgresql
+    networks:
+      - project-network
+networks:
+  project-network:
+    external: true

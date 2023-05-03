@@ -1,0 +1,50 @@
+version: '3.4'
+services:
+  ongdb:
+    image: 'docker.artifactory.adform.com/ciam/ongdb:latest'
+    container_name: ongdb
+    ports:
+      - '7687:7687'
+      - '7474:7474'
+    healthcheck:
+        test: ["CMD", "curl", "-f", "http://localhost:7474"]
+        interval: 30s
+        timeout: 10s
+        retries: 5
+    env_file:
+      - ./setup/env.ongdb
+    volumes:
+      - './databases/ongdb/data:/data'
+      - './databases/ongdb/import:/import'
+    networks:
+      - project-network
+  aerospike:
+    container_name: aerospike
+    image: aerospike/aerospike-server:4.8.0.5
+    ports:
+      - "3000:3000"
+      - "3001:3001"
+      - "3002:3002"
+      - "3003:3003"
+    environment:
+      NAMESPACE: ciam
+    networks:
+      - project-network      
+  adform.bloom.runtime:
+    image: "${DOCKER_REGISTRY-}adformbloomruntime"
+    container_name: adformbloomruntime
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+    ports:
+      - "5000:80"
+      - "5001:443"
+    build:
+      context: ./
+      dockerfile: ./src/Adform.Bloom.Runtime.Host/Dockerfile
+    links:
+      - ongdb
+    networks:
+      - project-network
+networks:
+  project-network:
+    external: true

@@ -1,0 +1,7 @@
+version: "3"
+services:
+  wrk:
+    image: adform/wrk2cjson
+    volumes:
+      - ./scripts:/wrk
+    network_mode: "host"

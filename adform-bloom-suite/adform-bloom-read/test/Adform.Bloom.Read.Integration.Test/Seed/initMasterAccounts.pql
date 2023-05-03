@@ -1,0 +1,17 @@
+﻿INSERT INTO public.master_accounts (id,
+username,
+email,
+name,
+first_name,
+last_name
+)
+VALUES 
+('bf15ab64-ff92-4143-99df-2f409652e2e3','subject1','subject1@test','Subject1','Sub1','Last1'),
+('050c54d3-a928-4430-baa2-910a9526c505','subject2','subject2@test','Subject2','Sub2','Last2'),
+('058c54d3-a928-4430-baa2-910a9526c505','subject3','subject3@test','Subject3','Sub3','Last3'),
+('058c54d3-a928-4430-baa2-950a9526c505','subject4','subject4@test','Subject4','Sub4','Last4'),
+('058c54d3-a928-4430-1111-910a9526c000','subject5','subject5@test','Subject5','Sub5','Last5'),
+('e32539ac-3c97-48c6-80a5-cdf78635148a','subject6','subject6@test','Subject6','Sub6','Last6'),
+('e32539ac-3c97-48c6-80a5-cdf78635148b','subject7','subject7@test','Subject7','Sub7','Last7'),
+('e65399fe-b720-436c-b21e-f97ed9c968cb','subject8','subject8@test','Subject8','Sub8','Last8'),
+('d6d5f3e8-5578-464e-a7a6-f5107102e527','subject9','subject9@test','Subject9','Sub9','Last9');

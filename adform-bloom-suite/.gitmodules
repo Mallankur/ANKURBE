@@ -1,0 +1,12 @@
+[submodule "adform-bloom-runtime"]
+	path = adform-bloom-runtime
+	url = https://gitz.adform.com/CIAM/adform-bloom-runtime.git
+	branch = master
+[submodule "adform-bloom-read"]
+	path = adform-bloom-read
+	url = https://gitz.adform.com/CIAM/adform-bloom-read.git
+	branch = master
+[submodule "adform-bloom"]
+	path = adform-bloom
+	url = https://gitz.adform.com/CIAM/adform-bloom.git
+	branch = master

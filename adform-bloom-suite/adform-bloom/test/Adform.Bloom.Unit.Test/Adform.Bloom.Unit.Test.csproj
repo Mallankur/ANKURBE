@@ -1,0 +1,54 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+      <TargetFramework>net6.0</TargetFramework>
+      <LangVersion>10.0</LangVersion>
+      <IsPackable>false</IsPackable>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="AutoFixture" Version="4.17.0" />
+        <PackageReference Include="Bogus" Version="34.0.2" />
+        <PackageReference Include="FluentAssertions" Version="6.7.0" />
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.2.0" />
+        <PackageReference Include="Moq" Version="4.18.1" />
+        <PackageReference Include="xunit" Version="2.4.1" />
+        <PackageReference Include="Xunit.Extensions.Ordering" Version="1.4.5" />
+        <PackageReference Include="xunit.runner.visualstudio" Version="2.4.5">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="coverlet.msbuild" Version="3.1.2">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="coverlet.collector" Version="3.1.2">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+    </ItemGroup>
+    
+    <ItemGroup>
+      <ProjectReference Include="..\..\src\Adform.Bloom.Mediatr.Extensions\Adform.Bloom.Mediatr.Extensions.csproj" />
+      <ProjectReference Include="..\..\src\Adform.Bloom.Api\Adform.Bloom.Api.csproj" />
+      <ProjectReference Include="..\..\src\Adform.Bloom.Messages\Adform.Bloom.Messages.csproj" />
+      <ProjectReference Include="..\..\src\Adform.Bloom.Read\Adform.Bloom.Read.csproj" />
+      <ProjectReference Include="..\..\src\Adform.Bloom.Write\Adform.Bloom.Write.csproj" />
+      <ProjectReference Include="..\Adform.Bloom.Test.Common\Adform.Bloom.Common.Test.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Update="testsettings.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+      <None Update="testsettings.testenv.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Remove="Read\UserFilteredSingleQueryHandlerTests.cs" />
+      <Compile Remove="Read\UserRangeQueryHandlerTests.cs" />
+    </ItemGroup>
+
+</Project>
